@@ -46,8 +46,9 @@ class TestVigener(unittest.TestCase):
     def test_empty(self):
         text = ''
         pwd = ''
-        self.assertEqual((decrypt(text, pwd)), text)
-        self.assertEqual((encrypt(text, pwd)), text)
+        cipher = ''
+        self.assertEqual(decrypt(cipher, pwd), text)
+        self.assertEqual(encrypt(text, pwd), cipher)
 
     def test_one(self):
         text = 'codewars'
