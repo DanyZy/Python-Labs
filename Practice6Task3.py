@@ -25,7 +25,7 @@ def fast_pow_iter_main(n, p):
         return n * fast_pow_iter_main(n, p - 1)
 
 
-class TestMax(unittest.TestCase):
+class TestFastPower(unittest.TestCase):
     def test_1(self):
         n = 10
         power = 0
@@ -42,8 +42,8 @@ class TestMax(unittest.TestCase):
 
     def test_3(self):
         n = 3
-        power = 9
-        result = 19683
+        power = 3
+        result = 27
         self.assertEqual(fast_pow_rec(n, power), result)
         self.assertEqual(fast_pow_iter(n, power), result)
 

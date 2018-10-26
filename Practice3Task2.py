@@ -1,4 +1,3 @@
-# encoding: utf-8
 import unittest
 
 
@@ -40,6 +39,7 @@ class TestMixedContent(unittest.TestCase):
             mixed_content("8,33,21,0,16,50,37,0,melon,7,apricot,peach,pineapple,17,21"),
             "melon,apricot,peach,pineapple|8,33,21,0,16,50,37,0,7,17,21"
         )
+
 
 if __name__ == '__main__':
     unittest.main()

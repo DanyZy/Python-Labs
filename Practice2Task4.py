@@ -1,25 +1,19 @@
-# encoding: utf-8
 import unittest
-from math import sqrt
-from itertools import count, islice
 
 
 def is_palindrome(n):
     number = str(n)
     reverse = number[::-1]
-    if number == reverse:
-        return True
-    else:
-        return False
+    return number == reverse
 
 
 def is_prime(n):
-    if n < 2:
-        return False
-    for number in islice(count(2), int(sqrt(n)-1)):
-        if not n % number:
-            return False
-    return True
+    if n == 1:
+        return True
+    devider = 2
+    while n % devider != 0:
+        devider += 1
+    return devider == n
 
 
 def prime_palindrome(supremum):
@@ -33,7 +27,6 @@ def prime_palindrome(supremum):
         i -= 1
 
 
-# Тут тесты
 class TestPrimePalindrome(unittest.TestCase):
     def test_small(self):
         self.assertEqual(prime_palindrome(20), 11)

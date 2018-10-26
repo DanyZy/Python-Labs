@@ -24,7 +24,7 @@ def sqrt(x, accuracy):
     return sqrt_iter(1.0)
 
 
-class TestMax(unittest.TestCase):
+class TestSqrt(unittest.TestCase):
     def test_0(self):
         x = 2
         accuracy = 3
