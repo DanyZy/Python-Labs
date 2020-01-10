@@ -1,6 +1,6 @@
 import unittest
-from Practice2.MaxPrimePalindrome import is_prime
-from Practice2.SumOfDigits import summa
+from Practice02.MaxPrimePalindrome import is_prime
+from Practice02.SumOfDigits import summa
 
 
 def filtered_accumulate(combiner, initial_value, predicate, f, start, stop, step):

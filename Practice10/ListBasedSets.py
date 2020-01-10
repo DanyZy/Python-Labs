@@ -1,4 +1,4 @@
-from Practice9.RecursivelyConnectedSequence import *
+from Practice09.RecursivelyConnectedSequence import *
 
 
 class Set:

@@ -1,4 +1,4 @@
-import Practice4.VigenereCipher as vigenereCipher
+import Practice04.VigenereCipher as vigenereCipher
 import sys
 
 
