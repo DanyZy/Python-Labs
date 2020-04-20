@@ -19,7 +19,7 @@ class Seq:
                 return first(elements), other(elements)
             return first(elements), seq(*other(elements))
         self.sequence = seq(*el)
-        self.size = self.seq_size()
+        self.size_ = self.size()
 
     """Первый элемент последовательности"""
     def head(self):
@@ -34,12 +34,12 @@ class Seq:
         if len(self.sequence) < 2:
             return None
         self.sequence = self.sequence[1]
-        self.size = self.seq_size()
+        self.size_ = self.size()
         return self
 
 # Easy
     """Размер последовательности"""
-    def seq_size(self):
+    def size(self):
         def rec(s, n=0):
             if s is None:
                 return n
@@ -54,7 +54,7 @@ class Seq:
             if i == 0:
                 return s[0]
             return find(s[1], i - 1)
-        if self.size < index:
+        if self.size_ < index:
             return None
         return find(self.sequence, index)
 
@@ -66,11 +66,11 @@ class Seq:
                     return comparison(s[1], o[1], size - 1)
                 return s[0] == o[0]
             return False
-        if self.size != other.size:
+        if self.size_ != other.size_:
             return False
-        if self.size == 0 and other.size == 0:
+        if self.size_ == 0 and other.size_ == 0:
             return True
-        return comparison(self.sequence, other.sequence, self.size)
+        return comparison(self.sequence, other.sequence, self.size_)
 
 # Moderate
     """Хвост последовательности с пропуском значений"""
@@ -83,10 +83,10 @@ class Seq:
             return None
         if len(self.sequence) < 2:
             return None
-        if drop == self.size:
+        if drop == self.size_:
             return None
         self.sequence = skip(self.sequence, drop)
-        self.size = self.seq_size()
+        self.size_ = self.size()
         return self
 
     """Соединение массивов"""
@@ -101,12 +101,12 @@ class Seq:
             if size_o == 1:
                 return o[0], None
             return None
-        if self.size == 0:
+        if self.size_ == 0:
             return other
-        if other.size == 0:
+        if other.size_ == 0:
             return self
-        self.sequence = connect(self.sequence, other.sequence, self.size, other.size)
-        self.size = self.seq_size()
+        self.sequence = connect(self.sequence, other.sequence, self.size_, other.size_)
+        self.size_ = self.size()
         return self
 
     """Метод обхода"""
@@ -118,8 +118,8 @@ class Seq:
                 return f(s[0]), None
             if size > 1:
                 return f(s[0]), transformation(s[1], size - 1, f)
-        self.sequence = transformation(self.sequence, self.size, func)
-        self.size = self.seq_size()
+        self.sequence = transformation(self.sequence, self.size_, func)
+        self.size_ = self.size()
         return self
 
     """Метод обхода с индексацией"""
@@ -131,8 +131,8 @@ class Seq:
                 return f(i, s[0]), None
             if size > 1:
                 return f(i, s[0]), transformation(s[1], size - 1, f, i + 1)
-        self.sequence = transformation(self.sequence, self.size, func)
-        self.size = self.seq_size()
+        self.sequence = transformation(self.sequence, self.size_, func)
+        self.size_ = self.size()
         return self
 
 # Hard
@@ -145,7 +145,7 @@ class Seq:
                 return f(s[0]), mapping(s[1], size-1, f)
             if size == 1:
                 return f(s[0]), None
-        self.sequence = mapping(self.sequence, self.size, func)
+        self.sequence = mapping(self.sequence, self.size_, func)
         return self
 
     """Метод фильтрации"""
@@ -160,8 +160,8 @@ class Seq:
             if size > 1 and f(s[0]):
                 return s[0], filtration(s[1], size - 1, f)
             return filtration(s[1], size - 1, f)
-        self.sequence = filtration(self.sequence, self.size, func)
-        self.size = self.seq_size()
+        self.sequence = filtration(self.sequence, self.size_, func)
+        self.size_ = self.size()
         return self
 
     """Метод редуцирования"""
@@ -173,7 +173,7 @@ class Seq:
                 return f(s[0], i)
             if size > 1:
                 return f(s[0], transformation(s[1], size - 1, i, f))
-        return transformation(self.sequence, self.size, init_value, func)
+        return transformation(self.sequence, self.size_, init_value, func)
 
     """Конвертация в список"""
     def list(self):
@@ -186,11 +186,7 @@ class Seq:
             if size > 1:
                 result.append(s[0])
                 return convert(s[1], size - 1, result)
-        return convert(self.sequence, self.size, [])
-
-
-Seq(1, 2, 3, 4).for_each(lambda x: print(x))
-Seq(1, 2, 3, 4).for_each_index(lambda i, x: print(i, x))
+        return convert(self.sequence, self.size_, [])
 
 
 class TestSeq(unittest.TestCase):
@@ -203,9 +199,9 @@ class TestSeq(unittest.TestCase):
         self.assertEqual(Seq(11, 24, 30).at(1), 24)
 
     def test_size(self):
-        self.assertEqual(Seq().seq_size(), 0)
-        self.assertEqual(Seq(1, 2).seq_size(), 2)
-        self.assertEqual(Seq(1, 2, 3, 4, 5).seq_size(), 5)
+        self.assertEqual(Seq().size(), 0)
+        self.assertEqual(Seq(1, 2).size(), 2)
+        self.assertEqual(Seq(1, 2, 3, 4, 5).size(), 5)
 
     def test_eq(self):
         self.assertTrue(Seq() == Seq())
@@ -241,6 +237,13 @@ class TestSeq(unittest.TestCase):
     def test_list(self):
         self.assertEqual(Seq().list(), [])
         self.assertEqual(Seq(1, 2, 3, 4).list(), [1, 2, 3, 4])
+
+    def test_for_each(self):
+        self.assertEqual(Seq("a", "b").for_each(lambda x: x + "c"), Seq("ac", "bc"))
+        self.assertEqual(Seq(1, 2, 3, 4).for_each(lambda x: x + 1), Seq(2, 3, 4, 5))
+
+    def test_for_each_index(self):
+        self.assertEqual(Seq(1, 2, 3, 4).for_each_index(lambda i, x: i + x), Seq(1, 3, 5, 7))
 
 
 if __name__ == "__main__":
