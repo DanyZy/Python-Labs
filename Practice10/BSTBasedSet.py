@@ -71,6 +71,8 @@ class Tree:
 
 """Инициализация множества"""
 def Set(*numbers):
+    if len(numbers) == 1 and isinstance(numbers[0], list):
+        numbers = numbers[0]
     result = Tree()
     for i in numbers:
         result.add(i)
@@ -84,7 +86,7 @@ class TestProcessSet(unittest.TestCase):
         Set(1, 2, 3)
 
     def test_contains(self):
-        self.assertTrue(1 in Set(1, 2, 3))
+        self.assertTrue(1 in Set([1, 2, 3]))
         self.assertFalse(4 in Set(1, 2, 3))
 
     def test_add(self):
@@ -97,11 +99,11 @@ class TestProcessSet(unittest.TestCase):
         self.assertEqual(len(Set(1, 2, 3, 3).list()), 3)
 
     def test_size(self):
-        self.assertEqual(len(Set(1, 2, 3)), 3)
+        self.assertEqual(len(Set([1, 2, 3])), 3)
         self.assertEqual(len(Set(1, 1, 2, 2, 3, 3)), 3)
 
     def test_union(self):
-        s1 = Set(1, 2, 3)
+        s1 = Set([1, 2, 3])
         s2 = Set(3, 4, 5)
         s3 = s1 + s2
         self.assertEqual(len(s3), 5)
